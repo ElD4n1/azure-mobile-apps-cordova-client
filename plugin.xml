@@ -5,7 +5,7 @@
 -->
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
            id="cordova-plugin-ms-azure-mobile-apps"
-      version="2.0.1">
+      version="2.0.2">
     <name>Azure Mobile Apps</name>
     <description>This library enables you to develop scalable and secure cordova mobile apps hosted in Microsoft Azure. You can incorporate structured storage, user authentication and push notifications in minutes. For more information, check out http://azure.microsoft.com/en-us/documentation/articles/app-service-mobile-value-prop-preview</description>
     <license>Apache 2.0</license>
@@ -91,7 +91,8 @@
     </platform>
 
     <platform name="android">
-        <framework src="com.microsoft.azure:azure-mobile-android:3.3.0"/>
+        <framework src="com.microsoft.azure:azure-mobile-android:3.4.0@aar"/>
+        <framework src="com.google.code.gson:gson:2.3"/>
 
         <source-file src="src/android/MobileServices.java"
                      target-dir="src/com/microsoft/windowsazure/mobileservices/cordova" />
@@ -104,15 +105,6 @@
         </config-file>  
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <meta-data android:name=".azure_mobileapps_redirect_uri_scheme" android:value="${redirectUriScheme}" />
-            <activity android:name="com.microsoft.windowsazure.mobileservices.authentication.RedirectUrlActivity">
-                <intent-filter>
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
-                    <data android:host="easyauth.callback" android:scheme="${redirectUriScheme}" />
-                </intent-filter>
-            </activity>
             <activity android:exported="false" android:name="com.microsoft.windowsazure.mobileservices.authentication.CustomTabsIntermediateActivity" />
             <activity android:exported="false" android:launchMode="singleTask" android:name="com.microsoft.windowsazure.mobileservices.authentication.CustomTabsLoginActivity" />
         </config-file> 
