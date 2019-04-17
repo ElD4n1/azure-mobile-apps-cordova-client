@@ -20913,7 +20913,7 @@ var MobileServiceSqliteStore = function (dbName) {
     /**
      * @inheritdoc
      */
-    this.defineTable = function (tableDefinition) {
+    this.defineTable = function (tableDefinition, errorCallback = null) {
         var self = this;
         return runner.run(function() {
             storeHelper.validateTableDefinition(tableDefinition);
@@ -20945,7 +20945,7 @@ var MobileServiceSqliteStore = function (dbName) {
                             } else { // table does not exist, create it.
                                 createTable(transaction, tableDefinition);
                             }
-                        });
+                        }, errorCallback);
 
                     },
                     callback,
