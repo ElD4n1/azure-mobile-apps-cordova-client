@@ -18807,16 +18807,12 @@ function loginWithInAppBrowser(startUri, endUri, callback) {
     var redirectionScript = "<script>location.href = unescape('" + window.escape(startUri) + "')</script>",
         startPage = "data:text/html," + encodeURIComponent(getSpinnerMarkup() + redirectionScript);
 
-    // iOS inAppBrowser issue requires this wrapping
-    setTimeout(function () {
-        var loginWindow = window.open(startPage, "_blank", "location=no,hardwareback=no"),
+        var loginWindow = window.open(startPage, "_blank", "location=no,hardwareback=no,toolbar=no,usewkwebview=yes"),
             flowHasFinished = false,
             loadEventHandler = function (evt) {
                 if (!flowHasFinished && evt.url.indexOf(endUri) === 0) {
                     flowHasFinished = true;
-                    setTimeout(function () {
-                        loginWindow.close();
-                    }, 500);
+                    loginWindow.close();
                     var result = parseOAuthResultFromDoneUrl(evt.url);
                     callback(result.error, result.oAuthToken);
                 }
@@ -18833,7 +18829,6 @@ function loginWithInAppBrowser(startUri, endUri, callback) {
                 callback(new Error("UserCancelled"), null);
             }
         });
-    }, 500);
 }
 
 function loginWithGoogle(appUrl, callback) {
@@ -20285,8 +20280,9 @@ MobileServiceTable.prototype._read = function (query, parameters, callback) {
                     }
                 }
 
+                // HACK disabled link header because we don't use azure tables and are getting annoying "unsafe header" errors all the time
                 // Grab link header when possible
-                if (Array.isArray(values) && response.getResponseHeader && _.isNull(values.nextLink)) {
+                /*if (Array.isArray(values) && response.getResponseHeader && _.isNull(values.nextLink)) {
                     try {
                         var link = response.getResponseHeader('Link');
                         if (!_.isNullOrEmpty(link)) {
@@ -20301,7 +20297,7 @@ MobileServiceTable.prototype._read = function (query, parameters, callback) {
                         // If cors doesn't allow us to access the Link header
                         // Just continue on without it
                     }
-                }
+                }*/
             }
             callback(error, values);
         });
